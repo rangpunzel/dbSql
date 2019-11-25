@@ -22,7 +22,11 @@ WHERE deptno IN (20, 30)
 AND hiredate > TO_DATE('19810601','YYYYMMDD');
 
 
+<<<<<<< HEAD
 --
+=======
+
+>>>>>>> master
 --where11
 SELECT *
 FROM emp
