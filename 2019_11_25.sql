@@ -30,7 +30,7 @@ FROM dual;
 -- SINGLE ROW FUNCTION : 행당 한번의 FUNCTION이 실행
 -- 1개의 행 INPUT -> 1개의 행으로 OUTPUT (COLUMN)
 --'Hello, World'
---dual 체이블에는 데이터가 하나의 행만 존재한다. 결과,도 하나의 행으로 나온다
+--dual 테이블에는 데이터가 하나의 행만 존재한다. 결과도 하나의 행으로 나온다
 SELECT LOWER('Hello, World') low, UPPER('Hello, World') upper, 
        INITCAP('Hello, World')
 FROM dual;
