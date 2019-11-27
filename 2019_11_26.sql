@@ -190,7 +190,12 @@ SELECT empno, ename,
       DECODE(deptno,10,'ACCOUNTING',20,'RESEARCH',30,'SALES',40,'OPERATIONS','DDIT') dname
 FROM emp;
 
---cond2
+--cond2(틀림.. 2019년이라는 전제하에 작성함..)
 SELECT empno, ename, hiredate,
        DECODE(MOD(TO_CHAR(hiredate,'YYYY'),2),'0','건강검진 비대상자','1','건강검진 대상자') CONTACT_TO_DOCTOR
+FROM emp;
+
+--cond2 정답은 밑에..
+SELECT empno, ename, hiredate,
+       DECODE(MOD(TO_CHAR(hiredate,'YYYY'),2),MOD(TO_CHAR(sysdate,'YYYY'),2),'건강검진 대상자','건강검진 비대상자') CONTACT_TO_DOCTOR
 FROM emp;
