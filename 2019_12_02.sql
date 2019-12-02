@@ -134,8 +134,26 @@ ON (prod_id = buy_prod);
 
 
 --outerjoin4
-SELECT cycle.pid, product.pnm, cid, day, cnt
-FROM cycle RIGHT OUTER JOIN product ON (cycle.pid = product.pid);
+SELECT product.pid, pnm, NVL(cid,1) cid, NVL(day,0) day, NVL(cnt,0)
+FROM product LEFT OUTER JOIN 
+                            (SELECT pid, cid, day, cnt
+                            FROM cycle c
+                            WHERE cid = 1)a 
+    ON (a.pid = product.pid);
+
+
+
+--outerjoin5
+
+SELECT p.pid, p.pnm, p.cid, cnm, p.day, p.cnt
+FROM
+(SELECT product.pid, pnm, NVL(cid,1) cid, NVL(day,0) day, NVL(cnt,0) cnt
+FROM product LEFT OUTER JOIN 
+                            (SELECT pid, cid, day, cnt
+                            FROM cycle c
+                            WHERE cid = 1)a 
+    ON (a.pid = product.pid))p JOIN customer ON (p.cid = customer.cid);
+
 
 
 
