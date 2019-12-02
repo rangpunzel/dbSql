@@ -6,7 +6,8 @@ AND region_name = 'Europe';
 
 
 
---join9
+--join9 (France, Denmark, Belgium 3개 국가에 속하는 locaionts 정보는 미존재
+-- 나머지5개중에 다수의 location 정보를 갖고 있는 국가가 존재한다.
 SELECT c.region_id, region_name, country_name, l.city
 FROM countries c JOIN regions r ON (c.region_id = r.region_id)
                  JOIN locations l ON (c.country_id = l.country_id)
@@ -35,7 +36,7 @@ FROM employees e JOIN jobs j ON (e.job_id = j.job_id);
 
 --join13
 
-SELECT m.employee_id,  m.first_name || m.last_name name, 
+SELECT m.employee_id mng_id,  m.first_name || m.last_name mgr_name, 
        e.employee_id, e.first_name || e.last_name name, e.job_id, j.job_title
 FROM employees e JOIN jobs j ON (e.job_id = j.job_id)
                  JOIN employees m ON (e.manager_id = m.employee_id);

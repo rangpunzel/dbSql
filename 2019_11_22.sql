@@ -85,7 +85,7 @@ WHERE job = 'SALESMAN'
 OR (empno LIKE ('78%') AND hiredate > TO_DATE('19810601','YYYYMMDD'));
 
 
---데이터 정령
+--데이터 정렬
 --10, 5, 3, 2, 1
 --오름차순 : 1, 2, 3, 5, 10
 --내림차순 : 10, 5, 3, 2, 1
