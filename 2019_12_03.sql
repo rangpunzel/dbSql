@@ -78,3 +78,35 @@ WHERE a.sido = b.sido
 AND a.sigungu = b.sigungu
 ORDER BY 도시발전지수 DESC);
 
+--tax 순위 구하기 연습
+SELECT  ROWNUM 순위, a.*
+FROM
+(SELECT sido, sigungu, round(sal/people,1) avg
+FROM tax
+ORDER BY avg DESC)a;
+
+--조인연습
+SELECT buger.순위, buger.sido, buger.sigungu, buger.도시발전지수, t.sido, t.sigungu, t.avg
+FROM
+(SELECT rownum 순위, dd.sido, dd.sigungu, dd.cnt 도시발전지수
+    FROM
+    (SELECT rownum, a.sido, a.sigungu, round(bcnt/lcnt,1) cnt
+    FROM
+        (SELECT sido, sigungu, count(sigungu) bcnt
+         FROM fastfood
+         WHERE gb IN ('버거킹','맥도날드','KFC')
+         GROUP BY sido, sigungu)a,
+        (SELECT sido, sigungu, count(sigungu) lcnt
+         FROM fastfood
+         WHERE gb = '롯데리아'
+         GROUP BY sido, sigungu)b
+    WHERE a.sido = b.sido
+    AND a.sigungu = b.sigungu
+    ORDER BY cnt DESC)dd)buger
+    ,
+(SELECT  ROWNUM 순위, a.*
+FROM
+(SELECT sido, sigungu, round(sal/people,1) avg
+FROM tax
+ORDER BY avg DESC)a)t
+WHERE buger.순위 = t.순위;
