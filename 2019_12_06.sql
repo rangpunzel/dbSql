@@ -189,7 +189,7 @@ DROP TABLE dept_test;
 
 CREATE TABLE dept_test(
         deptno NUMBER(2) CONSTRAINT pk_dept_test PRIMARY KEY,
-        danem VARCHAR2(14),
+        dname VARCHAR2(14),
         loc VARCHAR2(13));
         
 INSERT INTO dept_test VALUES(99, 'ddit','deajeon');
