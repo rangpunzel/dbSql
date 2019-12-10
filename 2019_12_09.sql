@@ -2,12 +2,12 @@
 --        (Ex : emp테이블의 empno(사번) dept테이블의 deptno(부서번호)
 --         해당 컬럼에 null 값은 들어 갈 수 있다.
 
---NOT NULL : 데이터 입력시 해당 컬러멩 값이 반드시 들어와야 한다.
+--NOT NULL : 데이터 입력시 해당 컬럼에 값이 반드시 들어와야 한다.
 
 --컬럼 레벨의 PRIMARY KEY 제약 생성
 --오라클의 제약 조건 이름을 임의로 생성(SYS-C000701)
 CREATE TABLE dept_test(
-    deptno NUMBER(2) PRIMARY KEY,
+    deptno NUMBER(2) PRIMARY KEY;
 
 --오라클 제약조건의 이름을 임의로 명명
 --PRIMARY KEY : pk_테이블명
