@@ -95,25 +95,25 @@ ORDER  BY IW;
 
 --과제
 (SELECT iw,
-       MAX(DECODE(d, 1, dt)) s,
-       MAX(DECODE(d, 2, dt)) m,
-       MAX(DECODE(d, 3, dt)) t,
-       MAX(DECODE(d, 4, dt)) w,
-      MAX(DECODE(d, 5, dt))  t1,
-       
-       NVL(MAX(DECODE(d, 6, dt)),NEXT_DAY(LAST_DAY(TO_DATE(:yyyymm,'YYYYMM')),6)) f,
-       
-       NVL(MAX(DECODE(d, 7, dt)),NEXT_DAY(LAST_DAY(TO_DATE(:yyyymm,'YYYYMM')),7)
-       ) sat
-       
+       MAX(DECODE(d, 1, dt)) s,MAX(DECODE(d, 2, dt)) m,MAX(DECODE(d, 3, dt)) t,
+       MAX(DECODE(d, 4, dt)) w,MAX(DECODE(d, 5, dt)) t1,MAX(DECODE(d, 6, dt)) f,
+       MAX(DECODE(d, 7, dt)) sat
 FROM
-    (SELECT TO_DATE(:yyyymm,'YYYYMM') + (LEVEL -1) dt, 
-            TO_CHAR(TO_DATE(:yyyymm,'YYYYMM') + (LEVEL -1), 'D')d,
-            TO_CHAR(TO_DATE(:yyyymm,'YYYYMM') + (LEVEL), 'IW')IW
+(SELECT TO_DATE(:yyyymm,'YYYYMM')-(SELECT TO_CHAR(TO_DATE(:yyyymm,'YYYYMM') , 'D')-1 d 
+                                   FROM dual) + (LEVEL -1) dt, 
+       TO_CHAR(TO_DATE(:yyyymm,'YYYYMM')-(SELECT TO_CHAR(TO_DATE(:yyyymm,'YYYYMM') , 'D')-1 d 
+                                          FROM dual) + (LEVEL -1), 'D')d,
+       TO_CHAR(TO_DATE(:yyyymm,'YYYYMM')-(SELECT TO_CHAR(TO_DATE(:yyyymm,'YYYYMM') , 'D')-1 d 
+                                          FROM dual) + (LEVEL), 'IW')IW
     FROM dual
-    CONNECT BY LEVEL <= TO_CHAR(LAST_DAY(TO_DATE(:yyyymm,'YYYYMM')),'DD'))
+    CONNECT BY LEVEL <= 35)
 GROUP BY iw
 )ORDER BY sat;
+
+
+(SELECT TO_CHAR(TO_DATE(:yyyymm,'YYYYMM') , 'D')-1 d
+    FROM dual);
+
 
 
 --테이블 만드는 쿼리
