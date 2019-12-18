@@ -95,62 +95,25 @@ ORDER  BY IW;
 
 --과제
 (SELECT iw,
-       MAX(DECODE(d, 1, dt)) s,MAX(DECODE(d, 2, dt)) m,MAX(DECODE(d, 3, dt)) t,
-       MAX(DECODE(d, 4, dt)) w,MAX(DECODE(d, 5, dt)) t1,MAX(DECODE(d, 6, dt)) f,
-       MAX(DECODE(d, 7, dt)) sat
+       MAX(DECODE(d, 1, dt)) s,
+       MAX(DECODE(d, 2, dt)) m,
+       MAX(DECODE(d, 3, dt)) t,
+       MAX(DECODE(d, 4, dt)) w,
+      MAX(DECODE(d, 5, dt))  t1,
+       
+       NVL(MAX(DECODE(d, 6, dt)),NEXT_DAY(LAST_DAY(TO_DATE(:yyyymm,'YYYYMM')),6)) f,
+       
+       NVL(MAX(DECODE(d, 7, dt)),NEXT_DAY(LAST_DAY(TO_DATE(:yyyymm,'YYYYMM')),7)
+       ) sat
+       
 FROM
-(SELECT TO_DATE(:yyyymm,'YYYYMM')-(SELECT TO_CHAR(TO_DATE(:yyyymm,'YYYYMM') , 'D')-1 d 
-                                   FROM dual) + (LEVEL -1) dt, 
-       TO_CHAR(TO_DATE(:yyyymm,'YYYYMM')-(SELECT TO_CHAR(TO_DATE(:yyyymm,'YYYYMM') , 'D')-1 d 
-                                          FROM dual) + (LEVEL -1), 'D')d,
-       TO_CHAR(TO_DATE(:yyyymm,'YYYYMM')-(SELECT TO_CHAR(TO_DATE(:yyyymm,'YYYYMM') , 'D')-1 d 
-                                          FROM dual) + (LEVEL), 'IW')IW
+    (SELECT TO_DATE(:yyyymm,'YYYYMM') + (LEVEL -1) dt, 
+            TO_CHAR(TO_DATE(:yyyymm,'YYYYMM') + (LEVEL -1), 'D')d,
+            TO_CHAR(TO_DATE(:yyyymm,'YYYYMM') + (LEVEL), 'IW')IW
     FROM dual
-    CONNECT BY LEVEL <= (SELECT ldt-fdt-1
-                         FROM
-                            (SELECT LAST_DAY(TO_DATE(:yyyymm, 'YYYYMM')) dt,
-                                   LAST_DAY(TO_DATE(:yyyymm, 'YYYYMM'))+
-                                   7-TO_CHAR(LAST_DAY(TO_DATE(:yyyymm, 'YYYYMM')),'D') ldt,
-                                   TO_DATE(:yyyymm, 'YYYYMM')-TO_CHAR(TO_DATE(:yyyymm, 'YYYYMM'),'D')-1 fdt
-                            FROM dual)))
+    CONNECT BY LEVEL <= TO_CHAR(LAST_DAY(TO_DATE(:yyyymm,'YYYYMM')),'DD'))
 GROUP BY iw
 )ORDER BY sat;
-
-
-SELECT
-    MAX(DECODE(d, 1, dt)) 일, MAX(DECODE(d, 2, dt)) 월, MAX(DECODE(d, 3, dt)) 화,
-    MAX(DECODE(d, 4, dt)) 수, MAX(DECODE(d, 5, dt)) 목, MAX(DECODE(d, 6, dt)) 금, 
-    MAX(DECODE(d, 7, dt)) 토
-FROM
-    (SELECT TO_DATE(:yyyymm,'YYYYMM')-(TO_CHAR(TO_DATE(:yyyymm,'YYYYMM') , 'D')-1) + (LEVEL -1) dt, 
-       TO_CHAR(TO_DATE(:yyyymm,'YYYYMM')-(TO_CHAR(TO_DATE(:yyyymm,'YYYYMM') , 'D')-1) + (LEVEL -1), 'D')d,
-       TO_CHAR(TO_DATE(:yyyymm,'YYYYMM')-(TO_CHAR(TO_DATE(:yyyymm,'YYYYMM') , 'D')-1) + (LEVEL), 'IW')IW
-    FROM dual
-    CONNECT BY LEVEL <= (SELECT ldt-fdt-1
-                         FROM
-                        (SELECT LAST_DAY(TO_DATE(:yyyymm, 'YYYYMM')) dt,
-                               LAST_DAY(TO_DATE(:yyyymm, 'YYYYMM'))+
-                               7-TO_CHAR(LAST_DAY(TO_DATE(:yyyymm, 'YYYYMM')),'D') ldt,
-                               TO_DATE(:yyyymm, 'YYYYMM')-TO_CHAR(TO_DATE(:yyyymm, 'YYYYMM'),'D')-1 fdt
-                        FROM dual)) )
-    GROUP BY dt - (d - 1)
-    ORDER BY dt - (d - 1);
-    
---201910 : 35, 첫주의 일요일 : 20190929, 마지막 주의 토요일 : 20191102
--- 일(1), 월(2), 화(3), 수(4), 목(5), 금(6), 토(7)
-SELECT ldt-fdt-1
-FROM
-(SELECT LAST_DAY(TO_DATE(:yyyymm, 'YYYYMM')) dt,
-       LAST_DAY(TO_DATE(:yyyymm, 'YYYYMM'))+
-       7-TO_CHAR(LAST_DAY(TO_DATE(:yyyymm, 'YYYYMM')),'D') ldt,
-       TO_DATE(:yyyymm, 'YYYYMM')-TO_CHAR(TO_DATE(:yyyymm, 'YYYYMM'),'D')-1 fdt
-FROM dual);
-
-
-
-
-
-
 
 
 --테이블 만드는 쿼리
