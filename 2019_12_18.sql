@@ -91,6 +91,7 @@ START WITH org_cd = 'XX회사'
 CONNECT BY PRIOR org_cd = parent_org_cd;
 
 
+
 -- pruning branch (가지치기)
 -- 계층 쿼리의 실행순서
 -- FROM -> START WITH ~ CONNECT BY --> WHERE
@@ -172,11 +173,16 @@ START WITH parent_seq IS NULL
 CONNECT BY PRIOR seq = parent_seq
 ORDER SIBLINGS BY seq DESC;
 
+
 --h9 정렬 과제
-SELECT seq, LPAD(' ',(LEVEL-1)*4) || title title, LEVEL
+SELECT seq, LPAD(' ',(LEVEL-1)*4) || title title
 FROM board_test
 START WITH parent_seq IS NULL
 CONNECT BY PRIOR seq = parent_seq
-ORDER SIBLINGS BY seq DESC;
+ORDER SIBLINGS BY NVL(parent_seq,seq) DESC;
 
-
+SELECT seq, LPAD(' ', 3 * (level - 1)) || TITLE title
+FROM BOARD_TEST
+Start WITH PARENT_SEQ is null
+CONNECT BY PRIOR seq = PARENT_SEQ
+order by  CONNECT_BY_ROOT(seq)desc ,seq asc;
