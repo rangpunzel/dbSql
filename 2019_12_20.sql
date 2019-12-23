@@ -118,11 +118,8 @@ CREATE OR REPLACE PROCEDURE registdept_test
     (p_deptno IN dept.deptno%TYPE,
     p_dname IN dept.dname%TYPE,
     p_loc IN dept.loc%TYPE)
-
 IS 
-    deptno dept.deptno%TYPE;
-    dname dept.dname%TYPE;
-    loc dept.loc%TYPE;
+
 
 BEGIN
 
@@ -132,3 +129,10 @@ END;
 /
 
 exec registdept_test(99,'ddit','daejeon');
+
+SELECT *
+FROM dept_test;
+
+rollback;
+
+commit;
